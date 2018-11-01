@@ -13,7 +13,9 @@ public class NewsRepository {
     Map<String, NewsItem> map = new HashMap<>();
 
 	//План доделок
-	
+
+    //select page.page_id, page.page_title, text.old_text from page left join text on text.old_id = page.page_latest;
+
 	//убрать ДатаПоследнегоЗаказа, Колонки, РасшифроватьПродажиПоПериодам
 	//Колонки_ABCКласс, дней с последнйе продажи, Колонки_MAX_Расшифровка ещё используются
 	

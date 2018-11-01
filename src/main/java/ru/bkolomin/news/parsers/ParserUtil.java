@@ -7,6 +7,8 @@ import ru.bkolomin.news.repository.NewsRepository;
 
 import java.util.ArrayList;
 
+//select page.page_id, text.old_text from page left join text on text.old_id = page.page_latest;
+
 public class ParserUtil {
 
     public static String getFirstElementText(Elements elements){
