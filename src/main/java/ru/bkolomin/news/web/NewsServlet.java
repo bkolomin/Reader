@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewsServlet extends HttpServlet {
@@ -20,15 +21,12 @@ public class NewsServlet extends HttpServlet {
     private ConfigurableApplicationContext springContext;
     private NewsService newsController;
 
-    NewsRepository newsRepository = new NewsRepository();
-
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        //springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
-        //newsController = springContext.getBean(NewsService.class);
+        springContext = new ClassPathXmlApplicationContext("spring-app.xml", "spring-db.xml");
 
-        newsController = new NewsService(new NewsRepository());
+        newsController = springContext.getBean(NewsService.class);
 
         newsController.parseAllNews();
     }
@@ -48,10 +46,25 @@ public class NewsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        List<NewsItem> newsList = newsController.getAll();
+        String text = newsController.getPageText(18);
+
+        NewsItem newsItem = new NewsItem("advice", "18", text, "");
+
+        List<NewsItem> newsList = new ArrayList<>();
+
+        newsList.add(newsItem);
+
 
         request.setAttribute("news", newsList);
 
         request.getRequestDispatcher("/news.jsp").forward(request, response);
+
+
+        /*List<NewsItem> newsList = newsController.getAll();
+
+        request.setAttribute("news", newsList);
+
+        request.getRequestDispatcher("/news.jsp").forward(request, response);
+        */
     }
 }

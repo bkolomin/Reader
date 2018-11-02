@@ -1,6 +1,11 @@
 package ru.bkolomin.news.repository;
 
 import jdk.nashorn.internal.objects.NativeRegExp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 import ru.bkolomin.news.model.NewsItem;
 
 import java.util.ArrayList;
@@ -8,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class NewsRepository {
 
     Map<String, NewsItem> map = new HashMap<>();
@@ -37,9 +43,27 @@ public class NewsRepository {
 	//https://www.viva64.com/ru/b/0391/
 	//https://habr.com/company/ruvds/blog/427293/
 	//https://habr.com/company/maxilect/blog/427307/
-	
 
-    public void NewsRepository(){
+    //private static final BeanPropertyRowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
+
+    private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public NewsRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+
+    public String getPageText(int pageId) {
+
+        try {
+            Map<String, Object> mapRes = jdbcTemplate.queryForMap("select page.page_id, page.page_title, text.old_text from page left join text on text.old_id = page.page_latest where page_id = ?", pageId);
+
+            return new String((byte[]) mapRes.get("old_text"), "UTF-8");
+        }catch(Exception ex){
+            return  "error: " + ex.toString();
+        }
+
     }
 
     public List<NewsItem> getAll(){

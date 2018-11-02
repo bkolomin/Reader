@@ -18,6 +18,12 @@ public class NewsService {
         this.repository = repository;
     }
 
+    public String getPageText(int pageId){
+
+        return repository.getPageText(pageId);
+
+    }
+
     public void parseAllNews(){
 
         ParserUtil.parseAllNews(repository);

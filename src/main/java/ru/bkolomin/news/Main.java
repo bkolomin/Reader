@@ -4,19 +4,21 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.jdbc.core.JdbcTemplate;
 import ru.bkolomin.news.model.NewsItem;
 import ru.bkolomin.news.parsers.Parser;
 import ru.bkolomin.news.parsers.ParserD3;
+import ru.bkolomin.news.util.Wiki;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import javax.sql.DataSource;
+import java.io.*;
 import java.math.BigInteger;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import static java.util.stream.Collectors.toList;
 
@@ -218,47 +220,16 @@ public class Main {
 
     }
 
+
+
     public static void main(String [] args){
 
-        //System.out.println(Long.MAX_VALUE);
+        //Scanner sc = new Scanner(System.in);
+        //int n = sc.nextInt();
 
-        Scanner sc = new Scanner(System.in);
+        String text = Wiki.getText(18);
 
-
-        /*
-        4
-        1 2 3 4
-        */
-
-        int n = sc.nextInt();
-        ArrayList<Integer> nums = new ArrayList<>();
-
-        for(int i = 0; i < n; i++ ){
-            nums.add(sc.nextInt());
-        }
-
-        for(long i = 0; i < Math.pow(10, n - 1); i++){
-
-            String numStr = "";
-
-            long ii = i;
-
-            for(int j = 0; j < n - 1; j++){
-
-                numStr = numStr + nums.get(j)  + ii % 10;
-
-                ii = ii / 10;
-
-            }
-
-            numStr = numStr + nums.get(n - 1);
-
-
-            BigInteger num = new BigInteger(numStr);
-
-            System.out.println("" + num + " - " + Math.sqrt(num.intValue()));
-
-        }
+        System.out.println(text);
 
     }
 
